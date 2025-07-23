@@ -96,7 +96,7 @@
       <label>사업장 주소</label>
       <div class="flex-row">
         <input type="text" id="postcode" placeholder="우편번호" readonly required>
-        <button type="button" onclick="execNaverAddressSearch()">주소 찾기</button>
+        <button type="button" onclick="execDaumPostcode()">주소 찾기</button>
       </div>
       <input type="text" id="roadAddress" placeholder="도로명 주소" readonly required>
       <input type="text" id="detailAddress" name="workplace" placeholder="상세주소 입력" required>
@@ -130,23 +130,17 @@
     </form>
   </div>
 
-  <!-- 네이버 지도 API (주소 검색용) -->
-  <script src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=v0v1fbr9mc&submodules=geocoder"></script>
+  <!-- 카카오 주소 검색 API -->
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <script>
-    function execNaverAddressSearch() {
-      const query = prompt("도로명 주소 또는 건물명을 입력하세요");
-      if (!query) return;
-
-      naver.maps.Service.geocode({ query: query }, function(status, response) {
-        if (status === naver.maps.Service.Status.OK) {
-          const result = response.v2.addresses[0];
-          document.getElementById("postcode").value = result.zipcode || "";
-          document.getElementById("roadAddress").value = result.roadAddress || result.jibunAddress;
-          document.getElementById("detailAddress").focus();
-        } else {
-          alert("주소를 찾을 수 없습니다. 다시 시도해주세요.");
+    function execDaumPostcode() {
+      new daum.Postcode({
+        oncomplete: function(data) {
+          document.getElementById('postcode').value = data.zonecode;
+          document.getElementById('roadAddress').value = data.roadAddress || data.jibunAddress;
+          document.getElementById('detailAddress').focus();
         }
-      });
+      }).open();
     }
   </script>
 </body>
