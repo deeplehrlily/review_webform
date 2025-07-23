@@ -3,105 +3,119 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>근무 후기 작성 폼</title>
+  <title>디맨드 근무 후기 이벤트</title>
   <link href="https://cdn.jsdelivr.net/npm/pretendard@1.3.6/dist/web/static/pretendard.css" rel="stylesheet">
   <style>
     body {
       font-family: 'Pretendard', sans-serif;
       background: #f9f9f9;
-      margin: 0;
       padding: 2rem;
+      margin: 0;
     }
     .container {
       max-width: 720px;
+      margin: auto;
       background: white;
       padding: 2rem;
-      margin: 0 auto;
-      border-radius: 12px;
+      border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
-    h2 {
+    h1 {
       text-align: center;
-      margin-bottom: 2rem;
-      color: #333;
+      margin-bottom: 1rem;
     }
     label {
-      display: block;
-      margin: 1rem 0 0.5rem;
       font-weight: 600;
+      display: block;
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
     }
-    input[type="text"], input[type="number"], select, textarea {
+    input[type="text"], input[type="email"], input[type="tel"], select {
       width: 100%;
       padding: 0.8rem;
-      border: 1px solid #ddd;
       border-radius: 6px;
-      box-sizing: border-box;
+      border: 1px solid #ccc;
       font-size: 1rem;
     }
-    textarea {
-      resize: vertical;
-      height: 100px;
-    }
-    .star-rating {
+    .radio-group, .checkbox-group {
       display: flex;
-      gap: 4px;
-      margin-top: 0.5rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
     }
-    .star {
-      font-size: 1.5rem;
+    .radio-group label, .checkbox-group label {
+      background: #f1f1f1;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
       cursor: pointer;
-      color: #ccc;
     }
-    .star.active {
-      color: #f5b301;
-    }
-    .btn-submit {
-      display: block;
-      width: 100%;
-      padding: 1rem;
+    .submit-btn {
+      margin-top: 2rem;
       background: #0054FF;
       color: white;
       border: none;
+      padding: 1rem;
+      font-size: 1rem;
+      width: 100%;
       border-radius: 8px;
-      font-size: 1.1rem;
       cursor: pointer;
-      margin-top: 2rem;
-    }
-    .btn-submit:hover {
-      background: #003fcc;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>근무 후기 작성</h2>
-    <form id="reviewForm">
-      <label for="company">회사 이름</label>
-      <input type="text" name="company" id="company" required>
-
-      <label for="position">직무</label>
-      <select name="position" id="position" required>
-        <option value="">선택하세요</option>
-        <option value="생산">생산</option>
-        <option value="정비">정비</option>
-        <option value="품질">품질</option>
-        <option value="물류">물류</option>
-        <option value="기타">기타</option>
-      </select>
-
-      <label for="address">사업장 주소</label>
-      <input type="text" id="address" name="address" placeholder="주소를 클릭해 입력해주세요" readonly onclick="openDaumMap()">
-      <div id="map" style="width:100%;height:300px;margin-top:10px;"></div>
-
-      <label for="welfare">복지 만족도</label>
-      <div class="star-rating" data-field="welfare">
-        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+    <h1>근무 후기 작성하고 룰렛 이벤트 참여!</h1>
+    <form id="eventForm">
+      <label>어떤 경로로 후기 이벤트를 접하셨나요?</label>
+      <div class="checkbox-group">
+        <label><input type="checkbox" name="source" value="홈페이지"> 디맨드 홈페이지</label>
+        <label><input type="checkbox" name="source" value="인스타그램"> 인스타그램</label>
+        <label><input type="checkbox" name="source" value="스레드"> 디맨드 스레드</label>
+        <label><input type="checkbox" name="source" value="오픈채팅"> 오픈채팅방</label>
+        <label><input type="checkbox" name="source" value="광고"> 인스타그램 광고</label>
+        <label><input type="checkbox" name="source" value="기타"> 기타</label>
       </div>
 
-      <label for="comment">후기</label>
-      <textarea name="comment" id="comment" placeholder="근무하면서 느낀 점을 자유롭게 적어주세요"></textarea>
+      <label>최종학력</label>
+      <select name="education" required>
+        <option value="">선택하세요</option>
+        <option value="고졸">고졸</option>
+        <option value="초대졸">초대졸</option>
+        <option value="대졸">대졸</option>
+      </select>
 
-      <button type="submit" class="btn-submit">제출하기</button>
+      <label>회사 이름</label>
+      <input type="text" name="company" placeholder="예: 현대자동차" required>
+
+      <label>사업장 주소 (카카오 주소 검색 API)</label>
+      <input type="text" name="workplace" id="address" readonly onclick="openDaumMap()" placeholder="클릭하여 주소를 검색하세요">
+      <div id="map" style="width:100%;height:300px;margin-top:10px;"></div>
+
+      <label>현장/전직장 여부</label>
+      <div class="radio-group">
+        <label><input type="radio" name="work_type" value="현직장" required> 현직장</label>
+        <label><input type="radio" name="work_type" value="전직장"> 전직장</label>
+      </div>
+
+      <label>직무</label>
+      <div class="checkbox-group">
+        <label><input type="checkbox" name="job" value="생산"> 생산</label>
+        <label><input type="checkbox" name="job" value="공무"> 공무</label>
+        <label><input type="checkbox" name="job" value="설비"> 설비</label>
+        <label><input type="checkbox" name="job" value="품질"> 품질</label>
+        <label><input type="checkbox" name="job" value="물류"> 물류</label>
+        <label><input type="checkbox" name="job" value="설계"> 설계/CAD</label>
+        <label><input type="checkbox" name="job" value="기타"> 기타</label>
+      </div>
+
+      <label>이메일</label>
+      <input type="email" name="email" placeholder="예: dmand@deeplehr.com" required>
+
+      <label>전화번호</label>
+      <input type="tel" name="phone" placeholder="예: 010-0000-0000" required>
+
+      <label><input type="checkbox" name="agree" required> 개인정보 수집 및 활용에 동의합니다.</label>
+
+      <button type="submit" class="submit-btn">다음으로 (1/2)</button>
     </form>
   </div>
 
@@ -111,23 +125,10 @@
     function openDaumMap() {
       new daum.Postcode({
         oncomplete: function(data) {
-          document.getElementById('address').value = data.address;
+          document.getElementById("address").value = data.address;
         }
       }).open();
     }
-  </script>
-
-  <!-- 별점 클릭 스크립트 -->
-  <script>
-    document.querySelectorAll('.star-rating').forEach(rating => {
-      const stars = rating.querySelectorAll('.star');
-      stars.forEach((star, i) => {
-        star.addEventListener('click', () => {
-          stars.forEach((s, j) => s.classList.toggle('active', j <= i));
-          rating.setAttribute('data-score', i + 1);
-        });
-      });
-    });
   </script>
 </body>
 </html>
