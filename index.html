@@ -30,7 +30,7 @@
       margin-top: 1.5rem;
       margin-bottom: 0.5rem;
     }
-    input[type="text"], input[type="email"], input[type="tel"], select {
+    input[type="text"], input[type="email"], input[type="tel"], select, textarea {
       width: 100%;
       padding: 0.8rem;
       border-radius: 6px;
@@ -60,10 +60,6 @@
       display: block;
       margin: 1rem auto;
     }
-    .upload-section img {
-      max-width: 100%;
-      margin-top: 1rem;
-    }
     .note {
       font-size: 0.9rem;
       color: #444;
@@ -74,6 +70,23 @@
     }
     .hidden {
       display: none;
+    }
+    .rating {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .star {
+      font-size: 1.5rem;
+      color: #ccc;
+      cursor: pointer;
+      transition: color 0.2s;
+      border-radius: 50%;
+      background-color: #f1f1f1;
+      padding: 0.2rem 0.4rem;
+    }
+    .star.selected {
+      color: #FFD700;
+      background-color: #fff3cd;
     }
     .flex-row {
       display: flex;
@@ -88,9 +101,9 @@
 <body>
   <div class="container" id="page1">
     <h1>근무 후기 이벤트 참여</h1>
-    <form onsubmit="event.preventDefault(); showPage2();">
+    <form onsubmit="event.preventDefault(); showPage(2);">
       <label>어떤 경로로 후기 이벤트를 접하게 되었나요?</label>
-      <select name="source" required>
+      <select required>
         <option value="">선택해주세요</option>
         <option value="홈페이지">디맨드 홈페이지</option>
         <option value="인스타그램">디맨드 인스타그램</option>
@@ -100,35 +113,30 @@
         <option value="블로그">디맨드 블로그</option>
         <option value="기타">기타</option>
       </select>
-
       <label>최종학력</label>
-      <select name="education" required>
+      <select required>
         <option value="">선택해주세요</option>
         <option value="고졸">고졸</option>
         <option value="초대졸">초대졸</option>
         <option value="대졸">대졸</option>
       </select>
-
-      <label>리뷰를 작성할 회사 이름을 적어주세요</label>
-      <input type="text" name="company" placeholder="예: 현대자동차" required>
-
+      <label>리뷰를 작성할 회사 이름</label>
+      <input type="text" required>
       <label>사업장 주소</label>
       <div class="flex-row">
         <input type="text" id="postcode" placeholder="우편번호" readonly required>
         <button type="button" onclick="execDaumPostcode()">주소 찾기</button>
       </div>
       <input type="text" id="roadAddress" placeholder="도로명 주소" readonly required>
-      <input type="text" id="detailAddress" name="workplace" placeholder="상세주소 입력" required>
-
-      <label>어떤 것에 해당하시나요?</label>
-      <select name="siteType" required>
+      <input type="text" placeholder="상세주소" required>
+      <label>근무형태</label>
+      <select required>
         <option value="">선택해주세요</option>
         <option value="현직장">현직장</option>
         <option value="전직장">전직장</option>
       </select>
-
-      <label>어떤 직무로 일하시고 있나요?</label>
-      <select name="jobType" required>
+      <label>직무유형</label>
+      <select required>
         <option value="">선택해주세요</option>
         <option value="생산">생산</option>
         <option value="공무">공무</option>
@@ -141,56 +149,90 @@
         <option value="시설관리">시설관리</option>
         <option value="기타">기타</option>
       </select>
-
       <label>이메일</label>
-      <input type="email" name="email" placeholder="예: dmand@deeplehr.com" required>
-
+      <input type="email" required>
       <label>전화번호</label>
-      <input type="tel" name="phone" placeholder="예: 010-0000-0000" required>
-
-      <button type="submit" class="next-btn">다음 (1/2)</button>
+      <input type="tel" required>
+      <button type="submit" class="next-btn">다음 (1/3)</button>
     </form>
   </div>
 
   <div class="container hidden" id="page2">
     <h1>현직자 인증 신청</h1>
-    <form>
-      <label>신청하신 내용의 증빙 서류를 업로드해주세요 <span style="color: red">*</span></label>
+    <form onsubmit="event.preventDefault(); showPage(3);">
+      <label>재직 증빙 파일 업로드 <span style="color: red">*</span></label>
       <div class="note">
-        ✅ 신청하는 내용의 증빙 서류를 업로드해주세요. <strong>기업(계열사 필수포함)명과 본명이</strong> 누락되지 않게 해주세요.<br>
-        📌 신규 인증 및 재인증시: 명함, 사원증, 재직증명서, 경력증명서, 최종합격 메일 및 문자<br>
-        ❌ 전직장 인증시 : 퇴사 확인서 사용 불가<br>
-        ⚠️ 유의사항: 개인정보는 최대한 삭제한 후 업로드해주세요. 해당 자료는 직장 인증용으로만 사용되며, 확인 후 모두 15일 내로 파기됩니다.
+        ✅ 신청하는 내용의 증빙 서류를 업로드해주세요. <strong>기업(계열사 포함)명과 본명</strong>이 포함되어야 합니다.<br>
+        📌 명함, 사원증, 재직증명서, 경력증명서, 최종합격 문자/메일 등<br>
+        ❌ 전직장 인증: 퇴사 확인서 불가<br>
+        ⚠️ 개인정보는 최대한 삭제 후 업로드 (15일 내 파기)
       </div>
-
       <div class="upload-section">
-        <input type="file" name="proofFile" accept="image/*,.pdf" required>
-        <img src="https://files.oaiusercontent.com/file-H9AnbnAmwC5gQzfJ5TTtUg" alt="예시 이미지">
+        <input type="file" required>
       </div>
+      <button type="submit" class="next-btn">다음 (2/3)</button>
+    </form>
+  </div>
 
+  <div class="container hidden" id="page3">
+    <h1>현직자 리뷰 작성</h1>
+    <form onsubmit="event.preventDefault(); alert('제출이 완료되었습니다!');">
+      <label>근무환경/시설</label>
+      <div class="rating" data-group="facilities">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <textarea minlength="50" maxlength="1000" required placeholder="최소 50자 이상, 최대 1000자 이하"></textarea>
+      <label>근무강도/스트레스</label>
+      <div class="rating" data-group="stress">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <textarea minlength="50" maxlength="1000" required placeholder="최소 50자 이상, 최대 1000자 이하"></textarea>
+      <label>급여/복지</label>
+      <div class="rating" data-group="salary">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <textarea minlength="50" maxlength="1000" required placeholder="최소 50자 이상, 최대 1000자 이하"></textarea>
+      <label>안정성/전망</label>
+      <div class="rating" data-group="stability">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <textarea minlength="50" maxlength="1000" required placeholder="최소 50자 이상, 최대 1000자 이하"></textarea>
+      <label>사람들 (동료, 상사, 회사문화 등)</label>
+      <div class="rating" data-group="people">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <textarea minlength="50" maxlength="1000" required placeholder="최소 50자 이상, 최대 1000자 이하"></textarea>
       <button type="submit" class="submit-btn">제출하기</button>
     </form>
   </div>
 
   <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <script>
+    function showPage(pageNumber) {
+      document.querySelectorAll('.container').forEach((page, index) => {
+        page.classList.toggle('hidden', index !== pageNumber - 1);
+      });
+    }
+
     function execDaumPostcode() {
       new daum.Postcode({
         oncomplete: function(data) {
-          var address = data.roadAddress ? data.roadAddress : data.jibunAddress;
-          document.getElementById('postcode').value = data.zonecode || '';
-          document.getElementById('roadAddress').value = address || '';
-          setTimeout(function() {
-            document.getElementById('detailAddress').focus();
-          }, 100);
+          document.getElementById('postcode').value = data.zonecode;
+          document.getElementById('roadAddress').value = data.roadAddress;
         }
       }).open();
     }
 
-    function showPage2() {
-      document.getElementById('page1').classList.add('hidden');
-      document.getElementById('page2').classList.remove('hidden');
-    }
+    document.querySelectorAll('.rating').forEach(group => {
+      const stars = group.querySelectorAll('.star');
+      stars.forEach((star, index) => {
+        star.addEventListener('click', () => {
+          stars.forEach((s, i) => {
+            s.classList.toggle('selected', i <= index);
+          });
+        });
+      });
+    });
   </script>
 </body>
 </html>
