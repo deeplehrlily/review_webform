@@ -59,6 +59,7 @@
       border-radius: 8px;
       cursor: pointer;
     }
+    #map { width: 100%; height: 300px; margin-top: 10px; display: none; }
   </style>
 </head>
 <body>
@@ -86,9 +87,9 @@
       <label>회사 이름</label>
       <input type="text" name="company" placeholder="예: 현대자동차" required>
 
-      <label>사업장 주소 (카카오 주소 검색 API)</label>
-      <input type="text" name="workplace" id="address" readonly onclick="openDaumMap()" placeholder="클릭하여 주소를 검색하세요">
-      <div id="map" style="width:100%;height:300px;margin-top:10px;"></div>
+      <label>사업장 주소</label>
+      <input type="text" name="workplace" id="address" placeholder="클릭하여 주소를 검색하세요" onclick="openDaumMap()" readonly required>
+      <div id="map"></div>
 
       <label>현장/전직장 여부</label>
       <div class="radio-group">
@@ -119,16 +120,49 @@
     </form>
   </div>
 
-  <!-- 카카오 주소 API -->
+  <!-- 카카오 지도 및 주소 API -->
+  <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=3b66206cb5fb9ddbb58709b4c190bded&libraries=services"></script>
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <script>
+    let map, marker;
+
     function openDaumMap() {
       new daum.Postcode({
         oncomplete: function(data) {
-          document.getElementById("address").value = data.address;
+          const addr = data.address;
+          document.getElementById('address').value = addr;
+
+          // 좌표 변환
+          const geocoder = new kakao.maps.services.Geocoder();
+          geocoder.addressSearch(addr, function(result, status) {
+            if (status === kakao.maps.services.Status.OK) {
+              const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+              const mapContainer = document.getElementById('map');
+              mapContainer.style.display = 'block';
+
+              if (!map) {
+                map = new kakao.maps.Map(mapContainer, {
+                  center: coords,
+                  level: 3
+                });
+              } else {
+                map.setCenter(coords);
+              }
+
+              if (!marker) {
+                marker = new kakao.maps.Marker({
+                  map: map,
+                  position: coords
+                });
+              } else {
+                marker.setPosition(coords);
+              }
+            }
+          });
         }
       }).open();
     }
   </script>
 </body>
 </html>
+
