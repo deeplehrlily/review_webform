@@ -37,17 +37,6 @@
       border: 1px solid #ccc;
       font-size: 1rem;
     }
-    .radio-group, .checkbox-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-    .radio-group label, .checkbox-group label {
-      background: #f1f1f1;
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
-      cursor: pointer;
-    }
     .submit-btn {
       margin-top: 2rem;
       background: #0054FF;
@@ -62,6 +51,7 @@
     .flex-row {
       display: flex;
       gap: 1rem;
+      margin-bottom: 0.5rem;
     }
     .flex-row input {
       flex: 1;
@@ -70,27 +60,29 @@
 </head>
 <body>
   <div class="container">
-    <h1>근무 후기 작성하고 룰렛 이벤트 참여!</h1>
-    <form id="eventForm">
-      <label>어떤 경로로 후기 이벤트를 접하셨나요?</label>
-      <div class="checkbox-group">
-        <label><input type="checkbox" name="source" value="홈페이지"> 디맨드 홈페이지</label>
-        <label><input type="checkbox" name="source" value="인스타그램"> 인스타그램</label>
-        <label><input type="checkbox" name="source" value="스레드"> 디맨드 스레드</label>
-        <label><input type="checkbox" name="source" value="오픈채팅"> 오픈채팅방</label>
-        <label><input type="checkbox" name="source" value="광고"> 인스타그램 광고</label>
-        <label><input type="checkbox" name="source" value="기타"> 기타</label>
-      </div>
+    <h1>근무 후기 작성</h1>
+    <form>
+      <label>어떤 경로로 후기 이벤트를 접하게 되었나요?</label>
+      <select name="source" required>
+        <option value="">선택해주세요</option>
+        <option value="홈페이지">디맨드 홈페이지</option>
+        <option value="인스타그램">디맨드 인스타그램</option>
+        <option value="스레드">디맨드 스레드</option>
+        <option value="오픈채팅">디맨드 오픈채팅방</option>
+        <option value="광고">인스타그램 광고</option>
+        <option value="블로그">디맨드 블로그</option>
+        <option value="기타">기타</option>
+      </select>
 
       <label>최종학력</label>
       <select name="education" required>
-        <option value="">선택하세요</option>
+        <option value="">선택해주세요</option>
         <option value="고졸">고졸</option>
         <option value="초대졸">초대졸</option>
         <option value="대졸">대졸</option>
       </select>
 
-      <label>회사 이름</label>
+      <label>리뷰를 작성할 회사 이름을 적어주세요</label>
       <input type="text" name="company" placeholder="예: 현대자동차" required>
 
       <label>사업장 주소</label>
@@ -101,22 +93,27 @@
       <input type="text" id="roadAddress" placeholder="도로명 주소" readonly required>
       <input type="text" id="detailAddress" name="workplace" placeholder="상세주소 입력" required>
 
-      <label>현장/전직장 여부</label>
-      <div class="radio-group">
-        <label><input type="radio" name="work_type" value="현직장" required> 현직장</label>
-        <label><input type="radio" name="work_type" value="전직장"> 전직장</label>
-      </div>
+      <label>어떤 것에 해당하시나요?</label>
+      <select name="siteType" required>
+        <option value="">선택해주세요</option>
+        <option value="현직장">현직장</option>
+        <option value="전직장">전직장</option>
+      </select>
 
-      <label>직무</label>
-      <div class="checkbox-group">
-        <label><input type="checkbox" name="job" value="생산"> 생산</label>
-        <label><input type="checkbox" name="job" value="공무"> 공무</label>
-        <label><input type="checkbox" name="job" value="설비"> 설비</label>
-        <label><input type="checkbox" name="job" value="품질"> 품질</label>
-        <label><input type="checkbox" name="job" value="물류"> 물류</label>
-        <label><input type="checkbox" name="job" value="설계"> 설계/CAD</label>
-        <label><input type="checkbox" name="job" value="기타"> 기타</label>
-      </div>
+      <label>어떤 직무로 일하시고 있나요?</label>
+      <select name="jobType" required>
+        <option value="">선택해주세요</option>
+        <option value="생산">생산</option>
+        <option value="공무">공무</option>
+        <option value="설비">설비</option>
+        <option value="환경안전">환경안전</option>
+        <option value="물류">물류</option>
+        <option value="품질">품질</option>
+        <option value="건설/공사">건설/공사</option>
+        <option value="설계/CAD/CAM">설계/CAD/CAM</option>
+        <option value="시설관리">시설관리</option>
+        <option value="기타">기타</option>
+      </select>
 
       <label>이메일</label>
       <input type="email" name="email" placeholder="예: dmand@deeplehr.com" required>
@@ -124,21 +121,22 @@
       <label>전화번호</label>
       <input type="tel" name="phone" placeholder="예: 010-0000-0000" required>
 
-      <label><input type="checkbox" name="agree" required> 개인정보 수집 및 활용에 동의합니다.</label>
-
       <button type="submit" class="submit-btn">다음으로 (1/2)</button>
     </form>
   </div>
 
   <!-- 카카오 주소 검색 API -->
-  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <script>
     function execDaumPostcode() {
       new daum.Postcode({
         oncomplete: function(data) {
-          document.getElementById('postcode').value = data.zonecode;
-          document.getElementById('roadAddress').value = data.roadAddress || data.jibunAddress;
-          document.getElementById('detailAddress').focus();
+          var address = data.roadAddress ? data.roadAddress : data.jibunAddress;
+          document.getElementById('postcode').value = data.zonecode || '';
+          document.getElementById('roadAddress').value = address || '';
+          setTimeout(function() {
+            document.getElementById('detailAddress').focus();
+          }, 100);
         }
       }).open();
     }
