@@ -1,7 +1,7 @@
 function showPage(n) {
-    document.querySelectorAll('.container').forEach((c, i) =>
-      c.classList.toggle('hidden', i !== n - 1)
-    );
+    document.querySelectorAll('.container').forEach((c, i) => {
+      c.classList.toggle('hidden', i !== n - 1);
+    });
   
     // 모든 progress-bar 업데이트
     const bars = document.querySelectorAll(".progress-bar");
@@ -9,7 +9,6 @@ function showPage(n) {
       bar.style.width = (n / 3 * 100) + "%";
     });
   
-    // 스크롤 애니메이션
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
   
@@ -18,7 +17,7 @@ function showPage(n) {
       oncomplete: function(data) {
         document.getElementById('postcode').value = data.zonecode;
         document.getElementById('roadAddress').value = data.roadAddress;
-        document.getElementById('detailAddress').focus();
+        setTimeout(() => document.getElementById('detailAddress').focus(), 100);
       }
     }).open();
   }
@@ -91,4 +90,5 @@ function showPage(n) {
   
     section.innerHTML = content;
     container.appendChild(section);
-  });  
+  });
+  
