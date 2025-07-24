@@ -11,7 +11,7 @@ body {
     background: #ffffff;
     padding: 2rem 1.5rem;
     border-radius: 16px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.06);
   }
   
   h1 {
@@ -219,4 +219,4 @@ body {
     .step-indicator {
       font-size: 0.9rem;
     }
-  }
+  }  
