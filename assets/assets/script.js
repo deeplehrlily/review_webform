@@ -18,7 +18,7 @@ function showPage(n) {
       oncomplete: function(data) {
         document.getElementById('postcode').value = data.zonecode;
         document.getElementById('roadAddress').value = data.roadAddress;
-        setTimeout(() => document.getElementById('detailAddress').focus(), 100);
+        document.getElementById('detailAddress').focus();
       }
     }).open();
   }
