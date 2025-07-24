@@ -1,3 +1,4 @@
+// 페이지 전환 및 진행률 업데이트
 function showPage(n) {
     document.querySelectorAll('.container').forEach((c, i) => {
       c.classList.toggle('hidden', i !== n - 1);
@@ -12,6 +13,7 @@ function showPage(n) {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
   
+  // 카카오 주소 API
   function execDaumPostcode() {
     new daum.Postcode({
       oncomplete: function(data) {
@@ -30,7 +32,7 @@ function showPage(n) {
         e.preventDefault();
         const container = form.closest(".container");
         container.classList.remove("shake");
-        void container.offsetWidth; // Reflow
+        void container.offsetWidth; // Reflow for animation reset
         container.classList.add("shake");
       }
     });
@@ -49,6 +51,7 @@ function showPage(n) {
   ];
   
   const container = document.getElementById("reviewItems");
+  
   reviewData.forEach((item, idx) => {
     const section = document.createElement("div");
     let content = `<label>${idx + 1}. ${item.title}</label>`;
